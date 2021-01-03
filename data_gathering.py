@@ -9,6 +9,7 @@ from riotwatcher import LolWatcher, ApiError
 import pandas as pd
 import numpy as np
 import time
+import os
 
 # Add data of one game to a list of all data
 def add_to_data(tier, division, match_data, index, all_data):
@@ -70,14 +71,15 @@ def get_matches(players, index, all_data):
         add_to_data(tier, division, match, index, all_data)      
 
 if __name__ == "__main__":
-    watcher = LolWatcher('RGAPI-e1f9aa09-491d-4ae0-9351-55607a5eeb90') #need to get new key every 24 hrs
+    api_key = os.environ.get('RIOT_API_KEY')
+    watcher = LolWatcher(api_key)
     region = 'na1'
     division_list = ['I', "II", "III", "IV"]
     tier_list = ['DIAMOND', 'PLATINUM', 'GOLD', 'SILVER', 'BRONZE', 'IRON']
     high_tier_list = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
     queue = 'RANKED_SOLO_5x5'
     game_per_division = 5
-    filename = "match_data.csv"
+    filename = "players_data.csv"
     index = list()
     all_data = list()
     start = time.time()
@@ -96,10 +98,9 @@ if __name__ == "__main__":
     matches_df = pd.DataFrame(all_data, index=index)
     try:
         temp = pd.read_csv(filepath_or_buffer=filename, index_col=0)
-        temp_cols = temp.columns
-        idk = matches_df[temp_cols]
+        cols_format = temp.columns
+        matches = matches_df[cols_format]
         matches_df.to_csv(filename, mode='a+', header=False)
     except Exception:
         matches_df.to_csv(filename, mode = 'a+')
-
     print(time.time() - start)
