@@ -95,7 +95,9 @@ if __name__ == "__main__":
         print(err)
     matches_df = pd.DataFrame(all_data, index=index)
     try:
-        matches_df = pd.read_csv(filepath_or_buffer=filename, index_col=0)
+        temp = pd.read_csv(filepath_or_buffer=filename, index_col=0)
+        temp_cols = temp.columns
+        idk = matches_df[temp_cols]
         matches_df.to_csv(filename, mode='a+', header=False)
     except Exception:
         matches_df.to_csv(filename, mode = 'a+')
