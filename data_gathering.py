@@ -5,13 +5,6 @@ Created on Sat Jan  2 20:13:47 2021
 @author: Henry
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 30 14:04:00 2020
-
-@author: Henry
-"""
-
 from riotwatcher import LolWatcher, ApiError
 import pandas as pd
 import numpy as np
