@@ -79,7 +79,7 @@ if __name__ == "__main__":
     high_tier_list = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
     queue = 'RANKED_SOLO_5x5'
     game_per_division = 5
-    filename = "players_data.csv"
+    filename = "data/players_data.csv"
     index = list()
     all_data = list()
     start = time.time()
@@ -95,7 +95,14 @@ if __name__ == "__main__":
             get_matches(players, index, all_data)
     except Exception as err:
         print(err)
+    
     matches_df = pd.DataFrame(all_data, index=index)
+    
+    # Create data folder
+    if not os.path.exists('data'):
+        os.makedirs('data')
+    
+    # If csv already exist, then append to it without adding header
     try:
         temp = pd.read_csv(filepath_or_buffer=filename, index_col=0)
         cols_format = temp.columns

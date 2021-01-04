@@ -6,6 +6,7 @@ Created on Sun Jan  3 13:33:42 2021
 """
 
 import pandas as pd
+import json
 
 def calculate_kda(row):
     if row['deaths'] == 0:
@@ -36,8 +37,14 @@ def get_lane(row):
         return "MISSING"
 
 if __name__ == "__main__":
-    filename = "players_data.csv"
-    outFilename = "cleaned_players_data.csv"
+    filename = "data/players_data.csv"
+    champFile = "json/id_to_champion.json"
+    sumFile = "json/id_to_summoner.json"
+    outFilename = "data/cleaned_players_data.csv"
+    with open(champFile, encoding="utf8") as f:
+        champion = json.load(f)
+    with open(sumFile, encoding="utf8") as f:
+        summoner = json.load(f)
     needed_cols = ['win', 'kills', 'deaths', 'assists', 'largestKillingSpree',
                    'largestMultiKill', 'doubleKills', 'tripleKills', 'quadraKills',
                    'pentaKills', 'visionScore', 'timeCCingOthers', 'turretKills',
@@ -45,10 +52,7 @@ if __name__ == "__main__":
                    'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled',
                    'firstBloodKill', 'firstBloodAssist', 'firstTowerKill',
                    'firstTowerAssist', 'firstInhibitorKill', 'firstInhibitorAssist',
-                   'perkPrimaryStyle', 'perkSubStyle', 'statPerk0', 'statPerk1',
-                   'statPerk2', 'champion', 'spell1', 'spell2',
-                   'gameDuration', 'tier', 'division']
-                
+                   'gameDuration', 'tier', 'division'] 
     # columns to calculate per minute
     calc_per_min = ['totalDamageDealt', 'magicDamageDealt', 'physicalDamageDealt',
        'trueDamageDealt', 'totalDamageDealtToChampions',
@@ -57,6 +61,7 @@ if __name__ == "__main__":
        'damageDealtToTurrets', 'totalDamageTaken', 'magicalDamageTaken', 'physicalDamageTaken',
        'goldEarned', 'goldSpent', 'totalMinionsKilled', 'neutralMinionsKilled',
        'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle']
+
     
     df = pd.read_csv(filepath_or_buffer=filename, index_col=0)
     # Keep data only for classic game mode
@@ -66,6 +71,9 @@ if __name__ == "__main__":
     
     out_df = df[needed_cols].copy()
     # Calculate kda, stats per min, and get lane
+    out_df['champion'] = df['champion'].apply(lambda x: champion[str(x)])
+    out_df['spell1'] = df['spell1'].apply(lambda x: summoner[str(x)])
+    out_df['spell2'] = df['spell2'].apply(lambda x: summoner[str(x)])
     out_df['kda'] = df.apply(lambda row: calculate_kda(row), axis=1)
     for col in calc_per_min:
         temp = f"{col}_per_min"
