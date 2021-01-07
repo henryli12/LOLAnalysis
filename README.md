@@ -26,9 +26,9 @@ Created models that predict the winrate of players with certain play style
 
 * Looked into the winrate of certain categorical variables
 <div style="width=100%;display: inline-block;">
-  <img alt="firstblood" src="images/firstblood_winrate.jpg" width="33%"></img>
-  <img alt="firstinhibit" src="images/firstinhibit_winrate.jpg" width="33%"></img>
-  <img alt="firstturret" src="images/firstturret_winrate.jpg" width="33%"></img>
+  <img alt="firstblood" src="images/firstblood_winrate.jpg" width="30%"></img>
+  <img alt="firstinhibit" src="images/firstinhibit_winrate.jpg" width="30%"></img>
+  <img alt="firstturret" src="images/firstturret_winrate.jpg" width="30%"></img>
 </div>
 
 ## Model Building
